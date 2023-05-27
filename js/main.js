@@ -18,7 +18,7 @@ form.addEventListener('submit', evento => {
   if (existe) {
     itemAtual.id = existe.id;
     atualizaItem(itemAtual);
-    itens[itens.findIndex(elemento => elemento.id === id)] = itemAtual;
+    itens[itens.findIndex(elemento => elemento.id === existe.id)] = itemAtual;
   } else {
     itemAtual.id = itens[itens.length - 1] ? itens[itens.length - 1].id + 1 : 0;
     itens.push(itemAtual);
@@ -34,6 +34,9 @@ function criaItem(item) {
   // <li class="item"><strong>3</strong>Casaco</li>
   const novoItem = document.createElement('li');
   novoItem.classList.add('item');
+  novoItem.addEventListener('click', () => {
+    completaFormulario(item.id);
+  });
 
   const quantidadeItem = document.createElement('strong');
   quantidadeItem.innerHTML = item.quantidade;
@@ -67,4 +70,11 @@ function deletaElemento(tag, id) {
   );
 
   localStorage.setItem('itens', JSON.stringify(itens));
+}
+
+function completaFormulario(id) {
+  form.querySelector('[name="nome"]').value =
+    itens[itens.findIndex(elemento => elemento.id === id)].nome;
+  form.querySelector('[name="quantidade"]').value =
+    itens[itens.findIndex(elemento => elemento.id === id)].quantidade;
 }
